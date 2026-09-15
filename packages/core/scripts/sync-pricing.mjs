@@ -144,7 +144,11 @@ async function main() {
     for (const [modelId, model] of Object.entries(entry?.models ?? {})) {
       if (!model?.cost || typeof model.cost.input !== 'number' || typeof model.cost.output !== 'number') continue;
       if (!isTextModel(model)) continue;
-      fresh[`${provider}/${modelId}`] = toRates(model.cost);
+      const key = `${provider}/${modelId}`;
+      // Add-only runs do not execute the cleanup pass below, so filter before
+      // merging to avoid recording marketplace-hosted models as official rates.
+      if (!isOfficialKey(key)) continue;
+      fresh[key] = toRates(model.cost);
     }
   }
 

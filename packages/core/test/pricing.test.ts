@@ -106,6 +106,13 @@ test('deepseek-v3.2 resolves to 0.28/0.42, not the deepseek-v3 rule', () => {
   assert.equal(p.output, 0.42);
 });
 
+test('deepseek-flash resolves to its official models.dev rates', () => {
+  const p = getModelPricing('deepseek-flash', { source: 'deepseek' });
+  assert.equal(p.input, 0.15);
+  assert.equal(p.output, 0.6);
+  assert.equal(p.cache_read, 0.003);
+});
+
 test('grok-4.20 resolves to 1.25/2.5, not the grok-4 rule', () => {
   const p = getModelPricing('grok-4.20');
   assert.equal(p.input, 1.25);
